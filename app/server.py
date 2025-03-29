@@ -34,8 +34,21 @@ async def fetch_data(filters: dict):
         print("Carros encontrados:")
         results = []
         for car in cars:
-            results.append(f"{car.model} - {car.year} - {car.color} - {car.fuel} - {car.brand} - {car.mileage} - {car.doors} - {car.transmission} - {car.price} - {car.status}")
-        # print(results)
+            results.append(
+                f"\n{'='*40}\n"
+                f"🚗 Modelo: {car.model}\n"
+                f"📅 Ano: {car.year}\n"
+                f"🎨 Cor: {car.color}\n"
+                f"⛽ Combustível: {car.fuel}\n"
+                f"🏭 Marca: {car.brand}\n"
+                f"📏 Quilometragem: {car.mileage} km\n"
+                f"🚪 Portas: {car.doors}\n"
+                f"⚙️ Transmissão: {car.transmission}\n"
+                f"💰 Preço: R$ {car.price}\n"
+                f"📌 Status: {car.status}\n"
+                f"{'='*40}"
+            )
+        # print("\n".join(results))
         return "\n".join(results)
     else:
         print("Nenhum carro encontrado para os critérios informados.")
@@ -43,5 +56,10 @@ async def fetch_data(filters: dict):
 
 if __name__ == "__main__":
     print('Rodando server...')
+    # teste = {
+    #     "color": "Azul",
+    #     "brand": "Ford"
+    # }
+    # fetch_data(teste)
     # Initialize and run the server
     mcp.run(transport='stdio')

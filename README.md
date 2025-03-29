@@ -16,7 +16,7 @@ Este é um projeto em andamento que envolve a construção de um sistema utiliza
 
 3. **Usar o sistema como "usuário"**
    - Com o banco de dados preenchido, vá até a pasta `client`.
-   - Execute o arquivo `cliente.py` para interagir com o sistema como usuário, consultando informações sobre os carros cadastrados.
+   - Execute o arquivo `client.py` para interagir com o sistema como usuário, consultando informações sobre os carros cadastrados.
 
 ---
 
