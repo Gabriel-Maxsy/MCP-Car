@@ -23,9 +23,6 @@ async def fetch_data(filters: dict):
     if filter_conditions:
         query = query.filter(or_(*filter_conditions))  # Passa todos os filtros com OR
 
-    # Imprime a consulta gerada (para debugging)
-    print("Consulta gerada:", str(query))
-
     # Executamos a consulta
     cars = query.all()
 
@@ -36,6 +33,7 @@ async def fetch_data(filters: dict):
         for car in cars:
             results.append(
                 f"\n{'='*40}\n"
+                f"ID: {car.id}\n"
                 f"🚗 Modelo: {car.model}\n"
                 f"📅 Ano: {car.year}\n"
                 f"🎨 Cor: {car.color}\n"

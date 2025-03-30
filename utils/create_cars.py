@@ -22,7 +22,7 @@ if __name__ == '__main__':
             year = int(fake.vehicle_year()),
             fuel = fake.random_element(elements=("Gasolina", "Álcool", "Diesel", "Elétrico")),
             brand = fake.vehicle_make(),
-            color = choice(["Azul", "Vermelho", "Amarelo", "Preto", "Branco", "Prata", "Cinza", "Verde", "Laranja"]),
+            color = choice(["Azul", "Vermelho", "Amarelo", "Preto", "Branco", "Prata", "Cinza", "Verde", "Laranja", "Violeta"]),
             mileage = mileage,
             doors = choice([2, 4]),
             transmission = choice(["Manual", "Automático"]),

@@ -51,29 +51,53 @@ class MCPClient:
 
     async def chat_loop(self):
         """Run an interactive chat loop"""
-        print("\nRodando o MCP client")
-        print("Type your queries or 'quit' to exit.")
-
         while True:
             try:
-                query = {}
-                query["color"] = input("\ncolor: ")
-                query["transmission"] = input("\ntransmission: ")
-                query["brand"] = input("\nbrand")
-
-                # if query.lower() == 'quit':
-                #     break
+                fields = ["Marca", "Modelo", "Ano", "Preço mínimo", "Cor"]
+                query = {
+                    "brand": "",
+                    "model": "",
+                    "year": "",
+                    "price": "",
+                    "color": ""
+                }
                 
-                response = await self.process_query(query)
-                print("\n" + response)
+                for field, key in zip(fields, query.keys()):
+                    user_input = input(f"\n{field}: ").strip()  # Solicita a entrada do usuário
 
+                    # Verifica se o usuário quer sair
+                    if user_input.lower() == "sair":
+                        print("Saindo do chat...")
+                        return # Interrompe imediatamente o loop e sai do chat
+
+                    # Preenche o dicionário com a chave correspondente
+                    query[key] = user_input
+
+                # print(query)
+                response = await self.process_query(query)
+
+                print(response)
+            except asyncio.CancelledError:
+                print("A tarefa foi cancelada.")
             except Exception as e:
                 print(f"\nError: {str(e)}")
-
+        
 async def main():
     client = MCPClient()
-    await client.connect_to_server(SERVER_PATH)
-    await client.chat_loop()
+    try:
+        await client.connect_to_server(SERVER_PATH)
+        await client.chat_loop()
+    finally:
+        await client.exit_stack.aclose()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    valid_answers = ["carros", "car", "carro", "automovel", "automóvel", "veículos", "veiculos"]
+    
+    print("\nOlá bem vindo ao MCP Car")
+    user_answer = input("Com que posso lhe ajudar: ").lower()
+    
+    if any(word in user_answer for word in valid_answers):
+        asyncio.run(main())
+    else:
+        print("Não entendi sua resposta")
+    print("Obrigado!")
