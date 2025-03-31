@@ -5,6 +5,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # Definindo a raiz do projeto:
 ROOT_PATH = Path(__file__).parent.parent
 
+# Garantindo que o diretório 'data' exista:
+data_dir = ROOT_PATH / 'data'
+data_dir.mkdir(parents=True, exist_ok=True)  # Cria o diretório, se não existir
+
 # Criando a sessão para o banco de dados:
 db = create_engine(f"sqlite:///{ROOT_PATH / 'data' / 'cars.db'}")
 Session = sessionmaker(bind=db)
