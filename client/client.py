@@ -44,7 +44,7 @@ class MCPClient:
     async def chat_loop(self):
         while True:
             try:
-                fields = ["Preço máximo (sem centavos para melhor busca)", "Modelo", "Ano", "Marca", "Cor"]
+                fields = ["preço máximo (sem centavos para melhor busca)", "Modelo", "Ano", "Marca", "Cor"]
                 query = {
                     "price": "",
                     "model": "",

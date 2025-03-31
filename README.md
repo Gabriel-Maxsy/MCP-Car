@@ -18,7 +18,22 @@ Este é um projeto finalizado que utiliza o protocolo MCP (Model Context Protoco
 
 1. **Criar e configurar o ambiente virtual**
 
-   Para garantir que todas as dependências do projeto sejam instaladas corretamente, é recomendado criar um ambiente virtual. 
+   - Para garantir que todas as dependências do projeto sejam instaladas corretamente, é recomendado criar um ambiente virtual. 
+   - Na raiz do seu projeto, execute o seguinte comando para criar um ambiente virtual:
+
+      `python -m venv venv`
+   
+      Em seguida:
+      
+      `.\venv\Scripts\activate`
+
+      Então para baixar as dependências:
+
+      `pip install -r requirements.txt`
+   - Isso instalará todas as bibliotecas que o projeto necessita para funcionar corretamente.
+
+Agora você pode seguir com o restante da configuração do projeto, já com o ambiente virtual pronto para uso.
+
 
 2. **Criar o banco de dados**
    - Navegue até a pasta `app`.
