@@ -16,15 +16,19 @@ Este é um projeto finalizado que utiliza o protocolo MCP (Model Context Protoco
 
 ### Como rodar o projeto
 
-1. **Criar o banco de dados**
+1. **Criar e configurar o ambiente virtual**
+
+   Para garantir que todas as dependências do projeto sejam instaladas corretamente, é recomendado criar um ambiente virtual. 
+
+2. **Criar o banco de dados**
    - Navegue até a pasta `app`.
    - Abra o arquivo `database.py` e execute-o para criar o banco de dados no formato SQLite. Este script criará a estrutura necessária para armazenar os dados dos carros.
 
-2. **Preencher o banco de dados com dados fictícios**
+3. **Preencher o banco de dados com dados fictícios**
    - Acesse a pasta `utils`.
    - Abra o arquivo `create_cars.py` e execute-o para popular o banco de dados com 100 registros de carros fictícios. Esse passo é necessário para ter dados no banco antes de rodar o sistema.
 
-3. **Executar o cliente e consultar os dados**
+4. **Executar o cliente e consultar os dados**
    - Com o banco de dados preenchido, vá até a pasta `client`.
    - Execute o arquivo `client.py` para interagir com o sistema. O agente permitirá que você insira filtros (como marca, modelo, ano, etc.) para procurar carros no banco de dados.
 
