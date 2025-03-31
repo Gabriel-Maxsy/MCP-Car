@@ -2,34 +2,39 @@ from database import Car, session
 from sqlalchemy import or_
 from mcp.server.fastmcp import FastMCP
 
-# Initialize FastMCP server
+# Inicialização do servidor MCP:
 mcp = FastMCP("car")
 
+# Função para consulta no banco:
 @mcp.tool()
 async def fetch_data(filters: dict):
 
-    # Começamos com a consulta base
+    # Começamos com a consulta base:
     query = session.query(Car)
 
-    # Criar uma lista de filtros dinâmicos
+    # Criando uma lista de filtros dinâmicos:
     filter_conditions = []
 
     for key, value in filters.items():
-        # Verifica se o filtro existe na classe Car e se o valor não é None ou vazio
+        # Verifica se o filtro existe na classe Car e se o valor não é None ou vazio:
         if hasattr(Car, key) and value:
-            filter_conditions.append(getattr(Car, key).ilike(value))  # Usando ilike para insensibilidade a maiúsculas/minúsculas
+            if key == "price":
+                # Verifica se o preço do carro é menor ou igual ao valor máximo informado:
+                filter_conditions.append(getattr(Car, key) <= float(value))
+            else:
+                filter_conditions.append(getattr(Car, key).ilike(value))
 
-    # Usando or_ para combinar os filtros com "OU"
+    # Usando or_ para combinar os filtros com "OU":
     if filter_conditions:
-        query = query.filter(or_(*filter_conditions))  # Passa todos os filtros com OR
+        query = query.filter(or_(*filter_conditions))
 
-    # Executamos a consulta
+    # Executando a consulta:
     cars = query.all()
 
-    # Verificando se encontramos resultados
+    # Verificando se encontramos resultados:
     if cars:
-        print("Carros encontrados:")
         results = []
+        # Para cada carro encontrado, formata a resposta:
         for car in cars:
             results.append(
                 f"\n{'='*40}\n"
@@ -42,22 +47,13 @@ async def fetch_data(filters: dict):
                 f"📏 Quilometragem: {car.mileage} km\n"
                 f"🚪 Portas: {car.doors}\n"
                 f"⚙️ Transmissão: {car.transmission}\n"
-                f"💰 Preço: R$ {car.price}\n"
+                f"💰 Preço: R${car.price:,.2f}\n"
                 f"📌 Status: {car.status}\n"
                 f"{'='*40}"
             )
-        # print("\n".join(results))
         return "\n".join(results)
     else:
-        print("Nenhum carro encontrado para os critérios informados.")
         return "Nenhum carro encontrado."
 
-if __name__ == "__main__":
-    print('Rodando server...')
-    # teste = {
-    #     "color": "Azul",
-    #     "brand": "Ford"
-    # }
-    # fetch_data(teste)
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+# Iniciando o servidor MCP:
+mcp.run(transport='stdio')

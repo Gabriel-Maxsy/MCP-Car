@@ -3,21 +3,21 @@ from typing import Optional
 from contextlib import AsyncExitStack
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
-from anthropic import Anthropic
 from pathlib import Path
 
-ROOT_PATH =  Path(__file__).parent.parent
+# Definindo caminho para a conexão com o servidor:
+ROOT_PATH = Path(__file__).parent.parent
 SERVER_PATH = str(ROOT_PATH / 'app/server.py')
 
+# Definindo a classe do lado do cliente:
 class MCPClient:
     def __init__(self):
-        # Initialize session and client objects
+        # Inicializando a sessão e objetos do cliente:
         self.session: Optional[ClientSession] = None
         self.exit_stack = AsyncExitStack()
-        self.anthropic = Anthropic()
 
+    # Função para conexão com o servidor MCP:
     async def connect_to_server(self, server_teste: str):
-        """Connect to an MCP server"""
         command = "python"
         server_params = StdioServerParameters(
             command=command,
@@ -31,57 +31,53 @@ class MCPClient:
 
         await self.session.initialize()
 
-        # List available tools
-        # response = await self.session.list_tools()
-        # tools = response.tools
-
+    # Processamento das respostas do usuário:
     async def process_query(self, query):
-        """Envia a consulta para o servidor MCP e retorna a resposta."""
-
         if not self.session:
             return "Erro: Cliente não conectado ao servidor."
 
-        # Listar as ferramentas disponíveis no servidor
-        # response = await self.session.list_tools()
-        # tools = {tool.name for tool in response.tools}  # Converte para um conjunto de strings
+        # Chamando a função de consulta no banco de dados do servidor:
         result = await self.session.call_tool("fetch_data", {"filters": query})
-        # print(query, '\n', result)
         return result.content[0].text
         
-
+    # Chat iterativo com o usuário:
     async def chat_loop(self):
-        """Run an interactive chat loop"""
         while True:
             try:
-                fields = ["Marca", "Modelo", "Ano", "Preço mínimo", "Cor"]
+                fields = ["Preço máximo (sem centavos para melhor busca)", "Modelo", "Ano", "Marca", "Cor"]
                 query = {
-                    "brand": "",
+                    "price": "",
                     "model": "",
                     "year": "",
-                    "price": "",
+                    "brand": "",
                     "color": ""
                 }
-                
-                for field, key in zip(fields, query.keys()):
-                    user_input = input(f"\n{field}: ").strip()  # Solicita a entrada do usuário
 
-                    # Verifica se o usuário quer sair
+                for field, key in zip(fields, query.keys()):
+                    user_input = input(f"\nQual {field} você procura: ").strip()  # Solicita a entrada do usuário
+
+                    # Verifica se o usuário quer sair:
                     if user_input.lower() == "sair":
                         print("Saindo do chat...")
-                        return # Interrompe imediatamente o loop e sai do chat
+                        return
 
-                    # Preenche o dicionário com a chave correspondente
+                    if key == "price":
+                        user_input = user_input.replace(".", "").replace(",", "")  # Limpa o valor do preço
+
+                    # Preenche o dicionário com o valor correspondente:
                     query[key] = user_input
 
-                # print(query)
                 response = await self.process_query(query)
 
                 print(response)
+                print("\nSe quiser procurar outra opção, sinta-se à vontade:")
+            # Tratamento de erros e interrupção do chat:
             except asyncio.CancelledError:
                 print("A tarefa foi cancelada.")
             except Exception as e:
-                print(f"\nError: {str(e)}")
+                print(f"\nErro: {str(e)}")
         
+# Função principal, onde conectamos com o servidor e iniciamos o chat:
 async def main():
     client = MCPClient()
     try:
@@ -90,14 +86,17 @@ async def main():
     finally:
         await client.exit_stack.aclose()
 
+# Começo da interação com o usuário:
 if __name__ == "__main__":
-    valid_answers = ["carros", "car", "carro", "automovel", "automóvel", "veículos", "veiculos"]
+    valid_answers = ["carros", "car", "carro", "automóvel", "automovel", "veículos", "veiculos"]
     
-    print("\nOlá bem vindo ao MCP Car")
-    user_answer = input("Com que posso lhe ajudar: ").lower()
+    print("\nOlá, bem-vindo ao MCP Car")
+    user_answer = input("Como posso lhe ajudar: ").lower()
     
     if any(word in user_answer for word in valid_answers):
+        print("\nCaso queira pular algum dos filtros, basta digitar 'Não' ou apenas pressionar 'Enter'.")
+        print("PS: Você pode digitar 'sair' para encerrar a conversa com nosso agente!\n")
+        print("Entrando em contato com nosso agente...")
         asyncio.run(main())
     else:
-        print("Não entendi sua resposta")
-    print("Obrigado!")
+        print("Não entendi sua resposta.")
