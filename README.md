@@ -37,7 +37,7 @@ Agora você pode seguir com o restante da configuração do projeto, já com o a
 
 2. **Criar o banco de dados**
    - Navegue até a pasta `app`.
-   - Abra o arquivo `database.py` e execute-o para criar o banco de dados no formato SQLite. Este script criará a estrutura necessária para armazenar os dados dos carros.
+   - Abra o arquivo `database.py` e execute-o para criar o banco de dados no formato SQLite dentro da sua pasta "data". Este script criará a estrutura necessária para armazenar os dados dos carros.
 
 3. **Preencher o banco de dados com dados fictícios**
    - Acesse a pasta `utils`.
