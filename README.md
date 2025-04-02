@@ -11,7 +11,7 @@ Este é um projeto finalizado que utiliza o protocolo MCP (Model Context Protoco
 │-- 📂 client  
 │   ├── client.py  # Código principal do cliente onde ocorre interação  
 │-- 📂 utils  
-│   ├── create_cars.py  # Gera dados fictícios de carros e para o banco de dados
+│   ├── create_cars.py  # Gera dados fictícios para o banco   
 │-- README.md  # Documentação do projeto
 
 ### Como rodar o projeto
