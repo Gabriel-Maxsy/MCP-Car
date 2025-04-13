@@ -1,5 +1,7 @@
 # Projeto MCP
 
+[![smithery badge](https://smithery.ai/badge/@Gabriel-Maxsy/MCP-Car)](https://smithery.ai/server/@Gabriel-Maxsy/MCP-Car)
+
 Este é um projeto finalizado que utiliza o protocolo MCP (Model Context Protocol) para comunicação entre cliente e servidor. O projeto inclui a criação de um banco de dados SQLite e a implementação de um cliente que consulta esse banco.
 
 ### Estrutura de pastas
